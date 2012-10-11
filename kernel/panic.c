@@ -26,6 +26,7 @@
 #ifdef CONFIG_SEC_DEBUG
 #include <mach/sec_debug.h>
 #endif
+#include <linux/console.h>
 #include <linux/coresight.h>
 
 #define PANIC_TIMER_STEP 100
@@ -160,6 +161,13 @@ void panic(const char *fmt, ...)
 	kmsg_dump(KMSG_DUMP_PANIC);
 
 	atomic_notifier_call_chain(&panic_notifier_list, 0, buf);
+
+	/*
+	 * Unlock the console anyway here, in case it's occupied by another
+	 * one which has no chance to unlock the console thus prevents the
+	 * panic log prints on the console.
+	 */
+	console_unlock();
 
 	bust_spinlocks(0);
 
