@@ -388,8 +388,9 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks \
-           -mtune=cortex-a15 -mcpu=cortex-a15 -mfpu=neon-vfpv4 -DNDEBUG \
-           -marm -fgcse-sm -fgcse-las -std=gnu89
+           	   -mtune=cortex-a15 -mcpu=cortex-a15 -mfpu=neon-vfpv4 -DNDEBUG \
+           	   -marm -fgcse-sm -fgcse-las -std=gnu89 \
+		   -Wno-discarded-array-qualifiers
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
