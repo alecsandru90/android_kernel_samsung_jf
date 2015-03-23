@@ -465,7 +465,7 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-common -Werror-implicit-function-declaration \
 		   -Wno-format-security -fno-delete-null-pointer-checks \
-		   -fno-strict-aliasing
+		   -fno-strict-aliasing -Wno-discarded-array-qualifiers
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
