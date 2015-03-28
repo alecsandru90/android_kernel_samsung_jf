@@ -243,14 +243,11 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-GRAPHITE_FLAGS = -fgraphite -fgraphite-identity -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 
 HOSTCC       = gcc
 HOSTCXX      = g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer
 HOSTCXXFLAGS = -O3 -fgcse-las
-HOSTCXXFLAGS += $(GRAPHITE_FLAGS)
-HOSTCFLAGS   += $(GRAPHITE_FLAGS)
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -336,7 +333,6 @@ AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
 REAL_CC		= $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
-CPP     += $(GRAPHITE_FLAGS)
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
 STRIP		= $(CROSS_COMPILE)strip
@@ -354,7 +350,7 @@ CHECK		= sparse
 # warnings and causes the build to stop upon encountering them.
 CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
 # CC		= $(REAL_CC)
-CC      += $(GRAPHITE_FLAGS)
+CC      	+= -pthread
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
@@ -364,11 +360,10 @@ LDFLAGS_MODULE  =
 CFLAGS_KERNEL	= -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O2 \
+		  -pthread \
                   -fgcse-las \
                   -fpredictive-commoning \
                   -Wno-error=implicit-function-declaration
-CFLAGS_KERNEL   += $(GRAPHITE_FLAGS) 
-CFLAGS_MODULE   += $(GRAPHITE_FLAGS)
 
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
@@ -386,7 +381,7 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
+		   -Wno-format-security -pthread \
 		   -fno-delete-null-pointer-checks \
            	   -mtune=cortex-a15 -mcpu=cortex-a15 -mfpu=neon-vfpv4 -DNDEBUG \
            	   -marm -fgcse-sm -fgcse-las -std=gnu89 \
@@ -583,8 +578,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -O3 $(call cc-disable-warning,maybe-uninitialized,)
-KBUILD_CFLAGS   +=  $(GRAPHITE_FLAGS)
+KBUILD_CFLAGS	+= -O3 -pthread $(call cc-disable-warning,maybe-uninitialized,)
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
