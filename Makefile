@@ -248,7 +248,7 @@ GRAPHITE_FLAGS = -fgraphite -fgraphite-identity -floop-flatten -floop-paralleliz
 HOSTCC       = gcc
 HOSTCXX      = g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer $(GRAPHITE_FLAGS)
-HOSTCXXFLAGS = -O3 -fgcse-las $(GRAPHITE_FLAGS)
+HOSTCXXFLAGS = -O3 $(GRAPHITE_FLAGS)
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -351,7 +351,7 @@ CHECK		= sparse
 # warnings and causes the build to stop upon encountering them.
 CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
 # CC		= $(REAL_CC)
-CC      	+= -pthread $(GRAPHITE_FLAGS)
+CC      	+= -O3 -pthread $(GRAPHITE_FLAGS)
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
@@ -579,7 +579,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -O3 -pthread $(call cc-disable-warning,maybe-uninitialized,)
+KBUILD_CFLAGS	+= -O2 -pthread $(call cc-disable-warning,maybe-uninitialized,)
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
