@@ -34,6 +34,9 @@ FONTC	= $(srctree)/drivers/video/console/font_acorn_8x8.c
 # string library code (-Os is enforced to keep it much smaller)
 OBJS		+= string.o
 
+# Speed up the bootup process
+CFLAGS_decompress.o := -Os
+
 #
 # Architecture dependencies
 #
