@@ -448,6 +448,11 @@ ifdef SABERMOD_KERNEL_FLAGS
 endif
 # end The SaberMod Project additions
 
+# L1/L2 Cache parameters thanks to @JustArchi
+CACHE_FLAGS := --param l1-cache-line-size=32 --param l1-cache-size=32 --param l2-cache-size=2048
+
+CC += $(CACHE_FLAGS)
+
 # Use LINUXINCLUDE when you must reference the include/ directory.
 # Needed to be compatible with the O= option
 LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include \
@@ -676,6 +681,8 @@ ifneq ($(strip $(LOCAL_O3)),true)
   endif
 endif
 # end The SaberMod Project additions
+
+KBUILD_CFLAGS += $(CACHE_FLAGS)
 
 # Tell gcc to never replace conditional load with a non-conditional one
 KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
