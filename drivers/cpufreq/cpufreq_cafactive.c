@@ -1594,8 +1594,6 @@ static int cpufreq_governor_cafactive(struct cpufreq_policy *policy,
 			common_tunables = NULL;
 		}
 
-		policy->governor_data = NULL;
-
 		if (tunables->use_sched_load)
 			cpufreq_cafactive_disable_sched_input(tunables);
 
