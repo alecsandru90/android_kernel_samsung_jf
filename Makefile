@@ -360,10 +360,23 @@ AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
 # Optimization flags
-OPTI_FLAGS := -s -pipe -fno-pic -O2 -mcpu=cortex-a15 -mtune=cortex-a15 -mfloat-abi=softfp -mfpu=vfpv4
+OPTI_FLAGS := \
+	-O3 \
+	-marm \
+	-fgraphite \
+	-fgraphite-identity \
+	-floop-flatten \
+	-floop-parallelize-all \
+	-ftree-loop-linear \
+	-floop-interchange \
+	-floop-strip-mine \
+	-floop-block
 
 # Cache flags
-CACHE_FLAGS := --param l1-cache-line-size=16 --param l1-cache-size=16 --param l2-cache-size=2048
+CACHE_FLAGS := \
+	--param l1-cache-line-size=16 \
+	--param l1-cache-size=16 \
+	--param l2-cache-size=2048
 
 # Append optimization flags to CC
 CC	+= $(OPTI_FLAGS) $(CACHE_FLAGS)
@@ -387,7 +400,7 @@ KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
 KBUILD_AFLAGS_MODULE  := -DMODULE
-KBUILD_CFLAGS_MODULE  := -DMODULE -fno-pic
+KBUILD_CFLAGS_MODULE  := -DMODULE
 KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
 
 # Read KERNELRELEASE from include/config/kernel.release (if it exists)
